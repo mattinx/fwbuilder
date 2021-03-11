@@ -25,7 +25,6 @@
 
 #include "UDPServiceDialogTest.h"
 
-#include "../../../config.h"
 //#include "../../global.h"
 
 #include <QApplication>
@@ -74,14 +73,14 @@ void UDPServiceDialogTest::initTestCase()
     mw->show();
     mw->startupLoad();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    if (d!=NULL) d->close();
+    if (d!=nullptr) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
     QTest::qWait(1000);
 }
 
 Library* UDPServiceDialogTest::findUserLibrary()
 {
-    Library *lib = NULL;
+    Library *lib = nullptr;
     foreach (FWObject *obj, mw->db()->getByType(Library::TYPENAME))
     {
         if (obj->getName() == "User")

@@ -26,7 +26,6 @@
 #ifndef __BASE_COMPILER_HH__
 #define __BASE_COMPILER_HH__
 
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Rule.h"
 
@@ -158,6 +157,10 @@ public:
          * warning messages
          */
         static void warningRegExp(std::list<std::string> *warn_regexp);
+
+        static const std::string manifestMarker() {
+            return "# files: ";
+        }
 
     };
 }

@@ -29,7 +29,6 @@
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/FWException.h"
-#include "fwbuilder/ThreadTools.h"
 #include "fwbuilder/XMLTools.h"
 
 #ifdef _WIN32
@@ -290,6 +289,8 @@ public:
          */
         FWObjectDatabase(FWObjectDatabase& d);
 
+        FWObjectDatabase& operator=(const FWObjectDatabase&) = default;
+
         virtual ~FWObjectDatabase();
 
         // --- methods dealing with object index
@@ -448,7 +449,7 @@ public:
             }
         };
 
-        void merge(FWObjectDatabase *ndb, ConflictResolutionPredicate *mp=NULL);
+        void merge(FWObjectDatabase *ndb, ConflictResolutionPredicate *mp=nullptr);
         void findDuplicateIds(FWObjectDatabase *ndb, std::set<int> &dupids);
         
         void setFileName(const std::string &filename);

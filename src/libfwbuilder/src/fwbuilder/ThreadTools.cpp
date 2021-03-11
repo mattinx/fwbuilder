@@ -24,11 +24,11 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/ThreadTools.h"
+
+#ifdef USE_PTHREADS
 
 #include <time.h>
 #include <sys/types.h>
@@ -70,16 +70,16 @@ void Mutex::unlock() const
 
 Cond::Cond()
 {
-    pthread_cond_init( &cond, NULL );
+    pthread_cond_init( &cond, nullptr );
 }
 
 Cond::~Cond()
 {
 }
 
-bool Cond::wait(const Mutex &m) const
+bool Cond::wait(UniqueLock &lock) const
 {
-    m.lock();
+    Mutex m = lock.get_mutex();
     pthread_cond_wait( (pthread_cond_t*)&cond, (pthread_mutex_t*)&m.mutex);
     return true;
 }
@@ -92,6 +92,16 @@ void Cond::signal() const
 void Cond::broadcast() const
 {
     pthread_cond_broadcast( (pthread_cond_t*)&cond );
+}
+
+void Cond::notify_one() const
+{
+    signal();
+}
+
+void Cond::notify_all() const
+{
+    broadcast();
 }
 
 SyncFlag::SyncFlag(bool v)
@@ -198,4 +208,4 @@ ssize_t TimeoutCounter::read(int fd, void *buf, size_t n) const
 
 #endif
 
-
+#endif // USE_PTHREADS

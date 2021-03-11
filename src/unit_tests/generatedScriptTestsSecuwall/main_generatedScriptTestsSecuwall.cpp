@@ -14,20 +14,18 @@
  * o The terms of NetCitadel End User License Agreement
  */
 
-#include "../../config.h"
 
 #include "generatedScriptTestsSecuwall.h"
 
-#include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/CompilerOutputter.h>
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Constants.h"
 
+#include <QTest>
 #include <QApplication>
 #include <QTextCodec>
 
-#include "../../../common/init.cpp"
+#include "common/init.cpp"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -43,11 +41,5 @@ int main(int argc, char **argv)
 
     Resources res(Constants::getResourcesFilePath());
 
-
-    CppUnit::TextUi::TestRunner runner;
-    runner.addTest( GeneratedScriptTest::suite() );
-    runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
-                                                         std::cerr ) );
-
-    runner.run();
+    return QTest::qExec(new GeneratedScriptTest());
 }

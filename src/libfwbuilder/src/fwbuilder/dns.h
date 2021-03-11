@@ -28,7 +28,6 @@
 #ifndef __DNS_HH_FLAG__
 #define __DNS_HH_FLAG__
 
-#include "fwbuilder/libfwbuilder-config.h"
 
 #ifndef _WIN32
 
@@ -54,12 +53,12 @@
 
 #include "fwbuilder/InetAddr.h"
 #include "fwbuilder/FWException.h"
-#include "fwbuilder/BackgroundOp.h"
-#include "fwbuilder/ThreadTools.h"
 
 #include <vector>
 #include <map>
 #include <queue>
+#include "fwbuilder/ThreadTools.h"
+#include "fwbuilder/BackgroundOp.h"
 
 #ifndef RES_DFLRETRY 
 #  define RES_DFLRETRY 1
@@ -81,16 +80,10 @@ class HostEnt
  */
 class DNS
 {
-    public:
+public:
 
     DNS() {}
-    
-    /** 
-     * Should be called exactly once before this class
-     * ever used.
-     */
-    static void init();
-    
+
     /**
      * Finds IP adddresses of the host with given host name.
      * This operation does not run in backgound.
@@ -105,11 +98,11 @@ class DNS
      */
     static HostEnt getHostByAddr(const InetAddr &addr, int type=AF_INET);
 
-    private:
+private:
 
-    static Mutex *gethostbyname_mutex;
-    static Mutex *gethostbyaddr_mutex;
-    
+    static Mutex gethostbyaddr_mutex;
+    static Mutex gethostbyname_mutex;
+
 };
 
 }

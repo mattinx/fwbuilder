@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -62,7 +61,7 @@ DNSNameDialog::DNSNameDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::DNSNameDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -76,7 +75,7 @@ void DNSNameDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     DNSName *s = dynamic_cast<DNSName*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
 
     init=true;
@@ -105,9 +104,10 @@ void DNSNameDialog::loadFWObject(FWObject *o)
 void DNSNameDialog::validate(bool *res)
 {
     *res=true;
+#ifndef NDEBUG
     DNSName *s = dynamic_cast<DNSName*>(obj);
-    assert(s!=NULL);
-
+    assert(s!=nullptr);
+#endif
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
@@ -119,7 +119,7 @@ void DNSNameDialog::applyChanges()
     FWObject* new_state = cmd->getNewState();
 
     DNSName *s = dynamic_cast<DNSName*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     string oldname = obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );

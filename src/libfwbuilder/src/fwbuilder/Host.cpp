@@ -27,8 +27,6 @@
 #include <assert.h>
 #include <iostream>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/FWObjectDatabase.h"
@@ -50,7 +48,7 @@ Host::Host()
 void Host::init(FWObjectDatabase *root)
 {
     FWObject *opt = getFirstByType(HostOptions::TYPENAME);
-    if (opt == NULL)
+    if (opt == nullptr)
         add( root->createHostOptions() );
 }
 
@@ -64,14 +62,14 @@ void Host::fromXML(xmlNodePtr root)
 xmlNodePtr Host::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     FWObject *o;
 
     for(FWObjectTypedChildIterator j=findByType(Interface::TYPENAME); j!=j.end(); ++j)
- 	if((o=(*j))!=NULL )
+ 	if((o=(*j))!=nullptr )
  	    o->toXML(me);
     
     o=getFirstByType( Management::TYPENAME );
@@ -130,7 +128,7 @@ Management *Host::getManagementObject()
 
 /**
  * returns address from management interface. If there is no
- * management interface or no address to be found, returns NULL.
+ * management interface or no address to be found, returns nullptr.
  * May throw exception if interface has invalid address.
  */
 const InetAddr* Host::getManagementAddress()
@@ -148,13 +146,13 @@ const InetAddr* Host::getManagementAddress()
 
         }
     }    
-    return NULL;
+    return nullptr;
 }
 
 const Address* Host::getAddressObject() const
 {
     FWObjectTypedChildIterator j = findByType(Interface::TYPENAME);
-    if (j == j.end()) return NULL;
+    if (j == j.end()) return nullptr;
     return Interface::cast(*j)->getAddressObject();
 }
 
@@ -173,12 +171,12 @@ int Host::countInetAddresses(bool skip_loopback) const
 /*
  * This function will find parent host, firewall or cluster object of
  * a given object. If object is not a child of host, firewall or
- * cluster, it returns NULL
+ * cluster, it returns nullptr
  */
 FWObject* Host::getParentHost(FWObject *obj)
 {
     FWObject *parent_h = obj;
-    while (parent_h != NULL && Host::cast(parent_h) == NULL)
+    while (parent_h != nullptr && Host::cast(parent_h) == nullptr)
         parent_h = parent_h->getParent();
     return parent_h;
 }

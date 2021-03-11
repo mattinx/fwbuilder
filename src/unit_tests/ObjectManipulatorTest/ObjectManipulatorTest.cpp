@@ -25,7 +25,6 @@
 
 #include "ObjectManipulatorTest.h"
 
-#include "../../../config.h"
 //#include "../../global.h"
 
 #include <QApplication>
@@ -84,7 +83,7 @@ void ObjectManipulatorTest::editSelectedObject()
 
     om->editSelectedObject();
     QTest::qWait(100);
-    QVERIFY(mw->getOpenedEditor() == NULL);
+    QVERIFY(mw->getOpenedEditor() == nullptr);
     QVERIFY(mw->activeProject()->getCurrentRuleSet() == RuleSet::cast(policy->getFWObject()));
 
     om->editSelectedObject();

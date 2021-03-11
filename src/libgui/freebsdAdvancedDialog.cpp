@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "platforms.h"
 
@@ -61,10 +60,12 @@ freebsdAdvancedDialog::freebsdAdvancedDialog(QWidget *parent,FWObject *o)
     obj=o;
 
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
-    assert(fwopt!=NULL);
+    assert(fwopt!=nullptr);
 
+#ifndef NDEBUG
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
+#endif
 
     QStringList threeStateMapping;
 
@@ -118,7 +119,7 @@ void freebsdAdvancedDialog::accept()
     // new_state  is a copy of the fw object
     FWObject* new_state = cmd->getNewState();
     FWOptions *fwopt=(Firewall::cast(new_state))->getOptionsObject();
-    assert(fwopt!=NULL);
+    assert(fwopt!=nullptr);
 
     data.saveAll(fwopt);
 

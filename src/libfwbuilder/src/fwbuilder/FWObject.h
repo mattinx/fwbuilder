@@ -27,8 +27,6 @@
 #ifndef  __FWOBJECT_HH_FLAG__
 #define  __FWOBJECT_HH_FLAG__
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include <time.h>
 #include <string>
@@ -189,7 +187,7 @@ public:
         FWObject *node;
 
       public:
-        tree_iterator()                        { node=NULL;    }
+        tree_iterator()                        { node=nullptr;    }
         tree_iterator(FWObject *_n)            { node=_n;      }
         tree_iterator(const tree_iterator &ti) { node=ti.node; }
         FWObject* operator*() { return node; }
@@ -318,7 +316,7 @@ public:
     const std::string &getComment() const;
     void setComment(const std::string& c);
 
-    void storeCreationTime() { creation_time = time(NULL); }
+    void storeCreationTime() { creation_time = time(nullptr); }
     time_t getCreationTime() { return creation_time; }
 
     void setPrivateData(const std::string &key, void *data);
@@ -442,7 +440,7 @@ public:
     
     /**
      * Walks the tree, looking for objects that are referenced by two parents
-     * or those with this->parent == NULL. Prints report to stderr and
+     * or those with this->parent == nullptr. Prints report to stderr and
      * returns true if such objects have been found.
      */
     bool verifyTree();
@@ -503,7 +501,7 @@ public:
 
     /**
      * Returns first of direct children of current object
-     * whose getTypeName() same as given or NULL if not found.
+     * whose getTypeName() same as given or nullptr if not found.
      */
     virtual FWObject* getFirstByType(const std::string &type_name) const;
 
@@ -585,7 +583,8 @@ class FWObjectTypedChildIterator
     FWObjectTypedChildIterator();
     FWObjectTypedChildIterator(const FWObjectTypedChildIterator &o);   
     FWObjectTypedChildIterator(const FWObject *o, const std::string &_type_name);
-    
+    FWObjectTypedChildIterator& operator=(const FWObjectTypedChildIterator&) = default;
+
     bool operator==(const FWObject::const_iterator& __x) const;
     bool operator!=(const FWObject::const_iterator& __x) const;
     FWObject *operator*() const;

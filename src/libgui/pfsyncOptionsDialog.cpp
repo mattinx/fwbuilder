@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 
 #include "pfsyncOptionsDialog.h"
@@ -50,7 +49,7 @@ pfsyncOptionsDialog::pfsyncOptionsDialog(QWidget *parent, FWObject *o)
     obj = o;
 
     FWOptions *gropt = FWOptions::cast(obj);
-    assert(gropt != NULL);
+    assert(gropt != nullptr);
     
     data.registerOption(m_dialog->syncpeer,
                         gropt,

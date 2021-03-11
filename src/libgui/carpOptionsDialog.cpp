@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 
 #include "carpOptionsDialog.h"
@@ -53,7 +52,7 @@ carpOptionsDialog::carpOptionsDialog(QWidget *parent, FWObject *o)
     obj = o;
 
     FWOptions *gropt = FWOptions::cast(obj);
-    assert(gropt != NULL);
+    assert(gropt != nullptr);
     
     data.registerOption(m_dialog->carp_password,
                         gropt,

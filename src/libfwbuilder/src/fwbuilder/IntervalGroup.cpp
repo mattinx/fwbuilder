@@ -24,8 +24,6 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/IntervalGroup.h"
@@ -45,7 +43,7 @@ IntervalGroup::~IntervalGroup() {}
 bool  IntervalGroup::validateChild(FWObject *o)
 { 
     FWObject *oo = o;
-    if (FWObjectReference::cast(o)!=NULL) 
+    if (FWObjectReference::cast(o)!=nullptr) 
         oo = FWObjectReference::cast(o)->getPointer();
 
     string otype = oo->getTypeName();
@@ -66,9 +64,9 @@ FWReference* IntervalGroup::createRef()
 xmlNodePtr IntervalGroup::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j)
         (*j)->toXML(me);

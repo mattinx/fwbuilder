@@ -31,14 +31,13 @@
 #ifndef __XML_TOOLS_HH_FLAG__
 #define __XML_TOOLS_HH_FLAG__
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/Tools.h"
 #include "fwbuilder/FWException.h"
 
 #include <string>
 #include <functional>
+#include <type_traits>
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -50,14 +49,19 @@
 namespace libfwbuilder
 {
 
-//TODO: define type cast operators for these
-#define FROMXMLCAST(x) ((const char *)x)
-#define STRTOXMLCAST(x) ((xmlChar *)x.c_str())
-#define TOXMLCAST(x) ((xmlChar *)x)
-
 class XMLTools
 {
     public:
+    static const std::string defaultVersion;
+    static const char * FromXmlCast(xmlChar * c) { return reinterpret_cast<const char *>(c); }
+    static const char * FromXmlCast(const xmlChar * c) { return reinterpret_cast<const char *>(c); }
+    static xmlChar * ToXmlCast(char * c) { return reinterpret_cast<xmlChar *>(c); }
+    static xmlChar * ToXmlCast(const char * c) { return ToXmlCast(const_cast<char *>(c)); }
+    static xmlChar * StrToXmlCast(const std::string s) { return ToXmlCast(s.c_str()); }
+    template<class T>
+    static void FreeXmlBuff(const T t) {
+        xmlFree(reinterpret_cast<void *>(const_cast< typename std::remove_const<T>::type>(t) >(t)));
+    }
 
     static xmlNodePtr getXmlNodeByPath(xmlNodePtr r,const char   *path       );
     static xmlNodePtr getXmlNodeByPath(xmlNodePtr r,const std::string &path  );
@@ -90,7 +94,7 @@ class XMLTools
                               const std::string &dtd_file,
                               const UpgradePredicate *upgrade,
                               const std::string &template_dir,
-                              const std::string &current_version = std::string(FWBUILDER_XML_VERSION)
+                              const std::string &current_version = defaultVersion
     );
 
     static void setDTD(xmlDocPtr doc, 
@@ -185,7 +189,7 @@ class XMLTools
     
     /**
      * Convert file from older version to current one
-     * @return pointer to new document or NULL if doc is unchanged.
+     * @return pointer to new document or nullptr if doc is unchanged.
      *         if pointer to new document is returned, doc parameter
      *         becomes invalid and should not be used.
      */
@@ -193,7 +197,7 @@ class XMLTools
                              const std::string &file_name, 
                              const std::string &type_name,
                              const std::string &template_dir,
-                             const std::string &current_version = std::string(FWBUILDER_XML_VERSION)
+                             const std::string &current_version = defaultVersion
     );
 
     /**

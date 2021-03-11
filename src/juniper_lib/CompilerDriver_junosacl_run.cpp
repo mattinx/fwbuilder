@@ -1,4 +1,3 @@
-#include "../../config.h"
 
 #include "CompilerDriver_junosacl.h"
 #include "OSConfigurator_junos.h"
@@ -39,8 +38,8 @@ QString CompilerDriver_junosacl::assembleManifest(Cluster*, Firewall*, bool)
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
-    script << "/* " << MANIFEST_MARKER
-           << " * " << this->escapeFileName(file_names[FW_FILE]) << " */" << endl;
+    script << "/* " << manifestMarker()
+           << " * " << this->escapeFileName(file_names[FW_FILE]) << " */" << '\n';
     return script_buffer;
 }
 
@@ -81,8 +80,8 @@ QString CompilerDriver_junosacl::run(const string &cluster_id,
                                      const string &firewall_id,
                                      const string &single_rule_id)
 {
-    Cluster *cluster = NULL;
-    Firewall *fw = NULL;
+    Cluster *cluster = nullptr;
+    Firewall *fw = nullptr;
 
     getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 

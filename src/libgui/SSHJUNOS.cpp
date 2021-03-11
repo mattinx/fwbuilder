@@ -25,7 +25,6 @@
 
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -211,11 +210,7 @@ void SSHJunos::stateMachine()
              cmpPrompt(stdoutBuffer, QRegExp(pwd_prompt_2)) )
         {
             stdoutBuffer="";
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            proc->write( (pwd + "\n").toAscii() );
-#else
             proc->write( (pwd + "\n").toLatin1() );
-#endif
             break;
         }
 
@@ -302,18 +297,7 @@ void SSHJunos::stateMachine()
             stdoutBuffer="";
             break;
         }
-#if __cplusplus > 201402L
-    [[fallthrough]];
-#elif __cplusplus > 199711L
-    #if defined(__clang__)
-    [[clang::fallthrough]];
-    #elif defined(__GNUG__)
-    [[gnu::fallthrough]];
-    #endif
-#else
-    __attribute__ ((fallthrough));
-#endif
-
+    /* FALLTHRU */
     case WAITING_FOR_ENABLE:
         if (cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)))
         {
@@ -323,18 +307,7 @@ void SSHJunos::stateMachine()
             stateMachine();
             break;
         }
-
-#if __cplusplus > 201402L
-    [[fallthrough]];
-#elif __cplusplus > 199711L
-    #if defined(__clang__)
-    [[clang::fallthrough]];
-    #elif defined(__GNUG__)
-    [[gnu::fallthrough]];
-    #endif
-#else
-    __attribute__ ((fallthrough));
-#endif
+    /* FALLTHRU */
     case ENABLE:
         if (cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)))
         {
@@ -378,8 +351,8 @@ void SSHJunos::stateMachine()
             // see SF bug 2973136 , fwbuilder bug #1347
             // looks like if user hits Cancel to cancel install at just right
             // moment, the process can get killed when control is already
-            // inside this block. Adding test for proc != NULL to be sure.
-            if (activation_commands.size() != 0 && proc != NULL)
+            // inside this block. Adding test for proc != nullptr to be sure.
+            if (activation_commands.size() != 0 && proc != nullptr)
             {
                 QString s;
 

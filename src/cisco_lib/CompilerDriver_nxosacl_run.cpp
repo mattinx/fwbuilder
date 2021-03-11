@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include <fstream>
 #include <iostream>
@@ -79,8 +78,8 @@ QString CompilerDriver_nxosacl::assembleManifest(Cluster *, Firewall* , bool )
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
-    script << "!" << MANIFEST_MARKER
-           << "* " << this->escapeFileName(file_names[FW_FILE]) << endl;
+    script << "!" << manifestMarker()
+           << "* " << this->escapeFileName(file_names[FW_FILE]) << '\n';
     return script_buffer;
 }
 
@@ -124,8 +123,8 @@ QString CompilerDriver_nxosacl::run(const std::string &cluster_id,
                                    const std::string &firewall_id,
                                    const std::string &single_rule_id)
 {
-    Cluster *cluster = NULL;
-    Firewall *fw = NULL;
+    Cluster *cluster = nullptr;
+    Firewall *fw = nullptr;
 
     getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
